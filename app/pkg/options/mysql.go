@@ -1,10 +1,16 @@
 package options
 
 import (
+	"gorm.io/gorm"
 	"time"
 
 	"github.com/spf13/pflag"
 )
+
+type GORMUser interface {
+	// Get the new session
+	DB() *gorm.DB
+}
 
 type MySQLOptions struct {
 	Host     string `json:"host,omitempty" mapstructure:"host,omitempty"`

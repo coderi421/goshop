@@ -1,12 +1,12 @@
-package admin
+package custom
 
 import (
 	"github.com/coderi421/gframework/gmicro/server/restserver"
-	"github.com/coderi421/goshop/app/shop/admin/config"
+	"github.com/coderi421/goshop/app/shop/custom/config"
 )
 
 // NewUserHTTPServer 创建一个http server
-func NewUserHTTPServer(conf *config.Config) (*restserver.Server, error) {
+func NewCustomHTTPServer(conf *config.Config) (*restserver.Server, error) {
 	//trace.InitAgent(trace.Options{
 	//	Name:     conf.Telemetry.Name,
 	//	Endpoint: conf.Telemetry.Endpoint,
@@ -14,7 +14,7 @@ func NewUserHTTPServer(conf *config.Config) (*restserver.Server, error) {
 	//	Batcher:  conf.Telemetry.Batcher,
 	//})
 
-	uRestServer := restserver.NewServer(
+	cRestServer := restserver.NewServer(
 		restserver.WithPort(conf.Server.HttpPort),
 		restserver.WithEnableProfiling(true),
 		restserver.WithMiddlewares(conf.Server.Middlewares),
@@ -23,8 +23,8 @@ func NewUserHTTPServer(conf *config.Config) (*restserver.Server, error) {
 	//_ = tracerProvider()
 
 	//	配置好路由
-	initRouter(uRestServer)
-	return uRestServer, nil
+	initRouter(cRestServer)
+	return cRestServer, nil
 }
 
 //var tp *otelsdktrace.TracerProvider
@@ -42,7 +42,7 @@ func NewUserHTTPServer(conf *config.Config) (*restserver.Server, error) {
 //		otelsdktrace.WithResource(
 //			resource.NewWithAttributes(
 //				semconv.SchemaURL,
-//				semconv.ServiceNameKey.String("mxshop-user"),
+//				semconv.ServiceNameKey.String("shop-user"),
 //				attribute.String("environment", "dev"),
 //				attribute.Int("ID", 1),
 //			),

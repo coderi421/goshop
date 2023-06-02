@@ -23,4 +23,7 @@ const (
 
 	// ErrCodeInvalidParam - 400: Invalid param.
 	ErrCodeInvalidParam
+
+	// ErrInit - 500: Init Discovery failed.
+	ErrInit
 )

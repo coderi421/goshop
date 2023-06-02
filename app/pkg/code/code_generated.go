@@ -24,4 +24,5 @@ func init() {
 	register(ErrCodeNotExist, 400, "Sms code incorrect or expired")
 	register(ErrCodeInCorrect, 400, "Sms code incorrect")
 	register(ErrCodeInvalidParam, 400, "Invalid param")
+	register(ErrInit, 500, "Init Discovery failed")
 }

@@ -5,6 +5,8 @@ import (
 	"github.com/spf13/pflag"
 )
 
+const TracerNameNoGinCtx = "custom-srv"
+
 type TelemetryOptions struct {
 	// Name is the name of the service.
 	Name string `json:"name"`
