@@ -5,14 +5,7 @@ import (
 
 	metav1 "github.com/coderi421/gframework/pkg/common/meta/v1"
 	upbv1 "github.com/coderi421/goshop/api/user/v1"
-	srvv1 "github.com/coderi421/goshop/app/user/srv/service/v1"
 )
-
-func DTOToResponse(userdto srvv1.UserDTO) upbv1.UserInfoResponse {
-	return upbv1.UserInfoResponse{
-		NickName: userdto.Name,
-	}
-}
 
 /*
 controller层依赖了service层，service层依赖了data层：
@@ -26,15 +19,14 @@ func (us userServer) GetUserList(ctx context.Context, info *upbv1.PageInfo) (*up
 		Page:     int(info.Pn),
 		PageSize: int(info.PSize),
 	}
-
-	dtoList, err := us.srv.List(ctx, srvOpts)
+	dtoList, err := us.srv.List(ctx, []string{}, srvOpts)
 	if err != nil {
 		return nil, err
 	}
 	var rsp upbv1.UserListResponse
 	for _, value := range dtoList.Items {
 		userRsp := DTOToResponse(*value)
-		rsp.Data = append(rsp.Data, &userRsp)
+		rsp.Data = append(rsp.Data, userRsp)
 	}
 	return &rsp, nil
 }

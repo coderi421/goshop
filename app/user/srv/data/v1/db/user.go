@@ -57,6 +57,8 @@ func (u *user) List(ctx context.Context, orderby []string, opts metav1.ListMeta)
 	// 如果使用 db 的时候，初始化链式方法，然后拼接，最后调用 结束方法的时候，最好复制一份db 因为如果并发会出问题
 	// 如果直接使用链式+结束方法，则不会出现问题 u.db.Where("goodsname = ?", i).Find(m)
 	query := u.DB()
+	// 直接复制指针也可以
+	//query := u.db
 	// 使用db的DB方法，返回一个新的db
 	//排序
 	for _, value := range orderby {
@@ -82,21 +84,66 @@ func (u *user) List(ctx context.Context, orderby []string, opts metav1.ListMeta)
 //	@return *dv1.UserDO 用户信息
 //	@return error 错误
 func (u *user) GetByMobile(ctx context.Context, mobile string) (*dv1.UserDO, error) {
-	//TODO implement me
-	panic("implement me")
+	user := dv1.UserDO{}
+
+	err := u.db.Where("mobile = ?", mobile).First(&user).Error
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, errors.WithCode(code.ErrUserNotFound, err.Error())
+		}
+		return nil, errors.WithCode(code.ErrDatabase, err.Error())
+	}
+	return &user, nil
 }
 
+// GetByID
+//
+//	@Description: 通过用户ID查询用户
+//	@receiver u
+//	@param ctx
+//	@param id: 用户id
+//	@return *dv1.UserDO
+//	@return error
 func (u *user) GetByID(ctx context.Context, id uint64) (*dv1.UserDO, error) {
-	//TODO implement me
-	panic("implement me")
+	user := dv1.UserDO{}
+
+	//err是gorm的error这种error我们尽量不要抛出去
+	err := u.db.First(&user, id).Error
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, errors.WithCode(code.ErrUserNotFound, err.Error())
+		}
+		return nil, errors.WithCode(code.ErrDatabase, err.Error())
+	}
+	return &user, nil
 }
 
+// Create
+//
+//	@Description: 创建用户
+//	@receiver u
+//	@param ctx
+//	@param user: 用户DO
+//	@return error
 func (u *user) Create(ctx context.Context, user *dv1.UserDO) error {
-	//TODO implement me
-	panic("implement me")
+	tx := u.db.Create(user)
+	if tx.Error != nil {
+		return errors.WithCode(code.ErrDatabase, tx.Error.Error())
+	}
+	return nil
 }
 
+// Update
+//
+//	@Description: 更新用户
+//	@receiver u
+//	@param ctx
+//	@param user: 用户DO
+//	@return error
 func (u *user) Update(ctx context.Context, user *dv1.UserDO) error {
-	//TODO implement me
-	panic("implement me")
+	tx := u.db.Save(user)
+	if tx.Error != nil {
+		return errors.WithCode(code.ErrDatabase, tx.Error.Error())
+	}
+	return nil
 }
