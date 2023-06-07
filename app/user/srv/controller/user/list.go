@@ -14,7 +14,7 @@ contoller依赖service层，并不是直接依赖了具体的struct 而是依赖
 但是底层是绝对不能依赖父层的！
 */
 
-func (us userServer) GetUserList(ctx context.Context, info *upbv1.PageInfo) (*upbv1.UserListResponse, error) {
+func (us *userServer) GetUserList(ctx context.Context, info *upbv1.PageInfo) (*upbv1.UserListResponse, error) {
 	srvOpts := metav1.ListMeta{
 		Page:     int(info.Pn),
 		PageSize: int(info.PSize),

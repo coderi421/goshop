@@ -2,7 +2,7 @@ syntax = "proto3";
 import "google/protobuf/empty.proto";
 option go_package = "./;v1";
 
-// protoc  --proto_path=. --go_out=. --go-grpc_out=. user.proto
+// protoc  --proto_path=. --go_out=. --go-grpc_out=require_unimplemented_servers=false:. user.proto
 service User{
   rpc GetUserList(PageInfo) returns (UserListResponse); // 用户列表
   rpc GetUserByMobile(MobileRequest) returns (UserInfoResponse); //通过mobile查询用户

@@ -40,27 +40,27 @@ type users struct {
 
 var _ data.UserData = &users{}
 
-func (u users) Create(ctx context.Context, user *data.User) error {
+func (u *users) Create(ctx context.Context, user *data.User) error {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (u users) Update(ctx context.Context, user *data.User) error {
+func (u *users) Update(ctx context.Context, user *data.User) error {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (u users) Get(ctx context.Context, userID uint64) (data.User, error) {
+func (u *users) Get(ctx context.Context, userID uint64) (data.User, error) {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (u users) GetByMobile(ctx context.Context, mobile string) (data.User, error) {
+func (u *users) GetByMobile(ctx context.Context, mobile string) (data.User, error) {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (u users) CheckPassWord(ctx context.Context, password, encryptedPwd string) error {
+func (u *users) CheckPassWord(ctx context.Context, password, encryptedPwd string) error {
 	//TODO implement me
 	panic("implement me")
 }

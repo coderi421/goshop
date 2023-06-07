@@ -10,7 +10,7 @@ import (
 )
 
 // CreateUser controller层应该是很薄的一层，参数校验，日志打印，错误处理，调用service层
-func (u *userServer) CreateUser(ctx context.Context, request *upbv1.CreateUserInfo) (*upbv1.UserInfoResponse, error) {
+func (us *userServer) CreateUser(ctx context.Context, request *upbv1.CreateUserInfo) (*upbv1.UserInfoResponse, error) {
 	userDO := v12.UserDO{
 		Mobile:   request.Mobile,
 		NickName: request.NickName,
@@ -18,7 +18,7 @@ func (u *userServer) CreateUser(ctx context.Context, request *upbv1.CreateUserIn
 	}
 	userDTO := v1.UserDTO{userDO}
 
-	err := u.srv.Create(ctx, &userDTO)
+	err := us.srv.Create(ctx, &userDTO)
 	if err != nil {
 		log.Errorf("get user by mobile: %s,error: %v", request.Mobile, err)
 	}

@@ -9,6 +9,8 @@ type userServer struct {
 	srv srv1.UserSrv
 }
 
+var _ v1.UserServer = &userServer{}
+
 func NewUserServer(srv srv1.UserSrv) *userServer {
 	return &userServer{srv: srv}
 }

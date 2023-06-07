@@ -13,7 +13,7 @@ import (
 )
 
 // controller层应该是很薄的一层，参数校验，日志打印，错误处理，调用service层
-func (u *userServer) UpdateUser(ctx context.Context, request *upbv1.UpdateUserInfo) (*emptypb.Empty, error) {
+func (us *userServer) UpdateUser(ctx context.Context, request *upbv1.UpdateUserInfo) (*emptypb.Empty, error) {
 	birthDay := time.Unix(int64(request.BirthDay), 0)
 	userDO := v1.UserDO{
 		BaseModel: v1.BaseModel{
@@ -24,7 +24,7 @@ func (u *userServer) UpdateUser(ctx context.Context, request *upbv1.UpdateUserIn
 		Birthday: &birthDay,
 	}
 	userDTO := v12.UserDTO{userDO}
-	err := u.srv.Update(ctx, &userDTO)
+	err := us.srv.Update(ctx, &userDTO)
 	if err != nil {
 		log.Errorf("update user: %v,error: %v", userDTO, err)
 		return nil, err

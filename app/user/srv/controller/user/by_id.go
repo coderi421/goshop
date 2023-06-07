@@ -8,8 +8,8 @@ import (
 	"github.com/coderi421/gframework/pkg/log"
 )
 
-func (u *userServer) GetUserById(ctx context.Context, request *upbv1.IdRequest) (*upbv1.UserInfoResponse, error) {
-	user, err := u.srv.GetByID(ctx, uint64(request.Id))
+func (us *userServer) GetUserById(ctx context.Context, request *upbv1.IdRequest) (*upbv1.UserInfoResponse, error) {
+	user, err := us.srv.GetByID(ctx, uint64(request.Id))
 	if err != nil {
 		log.Errorf("get user by id: %s,error: %v", request.Id, err)
 	}
