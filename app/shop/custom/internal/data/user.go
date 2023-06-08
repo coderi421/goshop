@@ -6,7 +6,7 @@ import (
 )
 
 type User struct {
-	ID       uint64    `json:"id"`
+	ID       int32     `json:"id"`
 	Mobile   string    `json:"mobile"`
 	NickName string    `json:"nick_name"`
 	Birthday time.Time `gorm:"type:datetime"`
@@ -21,9 +21,9 @@ type UserListDO struct {
 }
 
 type UserData interface {
-	Create(ctx context.Context, user *User) error
+	Create(ctx context.Context, user *User) (id int32, err error)
 	Update(ctx context.Context, user *User) error
-	Get(ctx context.Context, userID uint64) (User, error)
-	GetByMobile(ctx context.Context, mobile string) (User, error)
-	CheckPassWord(ctx context.Context, password, encryptedPwd string) error
+	Get(ctx context.Context, userID int32) (*User, error)
+	GetByMobile(ctx context.Context, mobile string) (*User, error)
+	CheckPassWord(ctx context.Context, password, encryptedPwd string) (ok bool, err error)
 }

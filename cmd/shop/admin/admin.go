@@ -16,5 +16,5 @@ func main() {
 	if len(os.Getenv("GOMAXPROCS")) == 0 {
 		runtime.GOMAXPROCS(runtime.NumCPU())
 	}
-	admin.NewApp("admin-server").Run()
+	admin.NewApp("admin-service").Run()
 }

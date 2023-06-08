@@ -93,7 +93,7 @@ func (c *userClient) CheckPassWord(ctx context.Context, in *PasswordCheckInfo, o
 	return out, nil
 }
 
-// UserServer is the server API for User service.
+// UserServer is the service API for User service.
 // All implementations should embed UnimplementedUserServer
 // for forward compatibility
 type UserServer interface {

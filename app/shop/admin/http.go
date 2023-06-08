@@ -5,7 +5,7 @@ import (
 	"github.com/coderi421/goshop/app/shop/admin/config"
 )
 
-// NewUserHTTPServer 创建一个http server
+// NewUserHTTPServer 创建一个http service
 func NewUserHTTPServer(conf *config.Config) (*restserver.Server, error) {
 	//trace.InitAgent(trace.Options{
 	//	Name:     conf.Telemetry.Name,

@@ -45,7 +45,7 @@ func (so *MySQLOptions) Validate() []error {
 	return errs
 }
 
-// AddFlags adds flags related to server storage for a specific APIServer to the specified FlagSet.
+// AddFlags adds flags related to service storage for a specific APIServer to the specified FlagSet.
 func (mo *MySQLOptions) AddFlags(fs *pflag.FlagSet) {
 	fs.StringVar(&mo.Host, "mysql.host", mo.Host, ""+
 		"MySQL service host address. If left blank, the following related mysql options will be ignored.")
@@ -60,7 +60,7 @@ func (mo *MySQLOptions) AddFlags(fs *pflag.FlagSet) {
 		"Password for access to mysql, should be used pair with password.")
 
 	fs.StringVar(&mo.Database, "mysql.database", mo.Database, ""+
-		"Database name for the server to use.")
+		"Database name for the service to use.")
 
 	fs.IntVar(&mo.MaxIdleConnections, "mysql.max-idle-connections", mo.MaxOpenConnections, ""+
 		"Maximum idle connections allowed to connect to mysql.")

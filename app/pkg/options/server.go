@@ -35,16 +35,16 @@ func (so *ServerOptions) Validate() (errs []error) {
 }
 
 func (so *ServerOptions) AddFlags(fs *pflag.FlagSet) {
-	fs.BoolVar(&so.EnableProfiling, "server.enable-profiling", so.EnableProfiling,
+	fs.BoolVar(&so.EnableProfiling, "service.enable-profiling", so.EnableProfiling,
 		"enable-profiling, if true, will add <host>:<port>/debug/pprof/, default is true")
-	fs.BoolVar(&so.EnableMetrics, "server.enable-metrics", so.EnableMetrics,
+	fs.BoolVar(&so.EnableMetrics, "service.enable-metrics", so.EnableMetrics,
 		"enable-metrics, if true, will add /metrics, default is true")
-	fs.BoolVar(&so.EnableHealthCheck, "server.enable-health-check", so.EnableHealthCheck,
+	fs.BoolVar(&so.EnableHealthCheck, "service.enable-health-check", so.EnableHealthCheck,
 		"enable-health-check, if true, will add health check route, default is true")
 	//fs.StringVarP 带有简写命令
 	// （接收值的变量，命令名称，默认值，描述）
-	fs.StringVar(&so.Host, "server.host", so.Host, "server host default is 127.0.0.1")
-	fs.IntVar(&so.Port, "server.port", so.Port, "server port default is 8078")
-	fs.IntVar(&so.HttpPort, "server.http-port", so.HttpPort, "server http port default is 8079")
-	fs.StringVar(&so.Name, "server.name", so.Name, "server name default is user-srv")
+	fs.StringVar(&so.Host, "service.host", so.Host, "service host default is 127.0.0.1")
+	fs.IntVar(&so.Port, "service.port", so.Port, "service port default is 8078")
+	fs.IntVar(&so.HttpPort, "service.http-port", so.HttpPort, "service http port default is 8079")
+	fs.StringVar(&so.Name, "service.name", so.Name, "service name default is user-srv")
 }

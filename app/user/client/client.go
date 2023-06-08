@@ -15,7 +15,7 @@ import (
 
 func main() {
 	//客户端，设置全局负载均衡策略，这里选择了 random
-	// 这个逻辑中，balancerName是selector,在 gmicro/server/rpcserver/balancer.go中规定的
+	// 这个逻辑中，balancerName是selector,在 gmicro/service/rpcserver/balancer.go中规定的
 	selector.SetGlobalSelector(random.NewBuilder())
 	// selector.SetGlobalSelector(random.NewBuilder()) 设定的全局的 selector 然后这里，调用 selector 进行注册
 	rpcserver.InitBuilder()
@@ -52,7 +52,7 @@ func main() {
 	uc := v1.NewUserClient(conn)
 
 	// 测试 grpc 服务的负载均衡用例
-	// 在终端中，使用 --server.port=*** --server.http-port -c configs/user/srv.yaml 命令启动启动多个，这里就会轮询调用，测试负载均衡
+	// 在终端中，使用 --service.port=*** --service.http-port -c configs/user/srv.yaml 命令启动启动多个，这里就会轮询调用，测试负载均衡
 	for {
 		re, err := uc.GetUserList(context.Background(), &v1.PageInfo{
 			Pn:    1,

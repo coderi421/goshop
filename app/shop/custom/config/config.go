@@ -20,7 +20,7 @@ func New() *Config {
 
 type Config struct {
 	Log      *log.Options             `json:"log" mapstructure:"log"`
-	Server   *options.ServerOptions   `json:"server" mapstructure:"server"`     // 服务发现
+	Server   *options.ServerOptions   `json:"service" mapstructure:"service"`   // 服务发现
 	Registry *options.RegistryOptions `json:"registry" mapstructure:"registry"` // 注册中心
 	Jwt      *options.JwtOptions      `json:"jwt" mapstructure:"jwt"`           // jwt
 }
@@ -29,7 +29,7 @@ type Config struct {
 func (c *Config) Flags() (fss cliflag.NamedFlagSets) {
 	// fss.FlagSet("logs") -> 创建一个FlagSet对象，命名为logs，做为专属的 logs 传递给 Config.Log
 	c.Log.AddFlags(fss.FlagSet("logs"))
-	c.Server.AddFlags(fss.FlagSet("server"))
+	c.Server.AddFlags(fss.FlagSet("service"))
 	c.Registry.AddFlags(fss.FlagSet("registry"))
 	c.Jwt.AddFlags(fss.FlagSet("jwt"))
 	return fss

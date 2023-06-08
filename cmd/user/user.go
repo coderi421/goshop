@@ -18,6 +18,6 @@ func main() {
 	}
 
 	// 通过 NewApp 创建一个 app.App 对象
-	srv.NewApp("user-server").Run()
+	srv.NewApp("user-service").Run()
 	// 通过 Run 方法启动服务
 }
