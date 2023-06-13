@@ -15,6 +15,7 @@ func New() *Config {
 		Server:   options.NewServerOptions(),
 		Registry: options.NewRegistryOptions(),
 		Jwt:      options.NewJwtOptions(),
+		Redis:    options.NewRedisOptions(),
 	}
 }
 
@@ -23,6 +24,7 @@ type Config struct {
 	Server   *options.ServerOptions   `json:"service" mapstructure:"service"`   // 服务发现
 	Registry *options.RegistryOptions `json:"registry" mapstructure:"registry"` // 注册中心
 	Jwt      *options.JwtOptions      `json:"jwt" mapstructure:"jwt"`           // jwt
+	Redis    *options.RedisOptions    `json:"redis" mapstruct:"redis"`          // redis
 }
 
 // Flags implements app.CliOptions interface.Add flags to the specified FlagSet object.
@@ -32,6 +34,7 @@ func (c *Config) Flags() (fss cliflag.NamedFlagSets) {
 	c.Server.AddFlags(fss.FlagSet("service"))
 	c.Registry.AddFlags(fss.FlagSet("registry"))
 	c.Jwt.AddFlags(fss.FlagSet("jwt"))
+	c.Redis.AddFlags(fss.FlagSet("redis"))
 	return fss
 }
 
@@ -42,5 +45,6 @@ func (c *Config) Validate() (errors []error) {
 	errors = append(errors, c.Server.Validate()...)
 	errors = append(errors, c.Registry.Validate()...)
 	errors = append(errors, c.Jwt.Validate()...)
+	errors = append(errors, c.Redis.Validate()...)
 	return
 }

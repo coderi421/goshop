@@ -1,11 +1,13 @@
 package custom
 
 import (
+	"context"
 	gapp "github.com/coderi421/gframework/gmicro/app"
 	"github.com/coderi421/gframework/gmicro/registry"
 	"github.com/coderi421/gframework/gmicro/registry/consul"
 	"github.com/coderi421/gframework/pkg/app"
 	"github.com/coderi421/gframework/pkg/log"
+	"github.com/coderi421/gframework/pkg/storage"
 	"github.com/coderi421/goshop/app/pkg/options"
 	"github.com/coderi421/goshop/app/shop/custom/config"
 	"github.com/hashicorp/consul/api"
@@ -39,6 +41,26 @@ func NewUserApp(cfg *config.Config) (*gapp.App, error) {
 	defer log.Flush()
 	//服务注册
 	register := NewRegistrar(cfg.Registry)
+
+	//连接redis
+	redisConfig := &storage.Config{
+		Host:                  cfg.Redis.Host,
+		Port:                  cfg.Redis.Port,
+		Addrs:                 cfg.Redis.Addrs,
+		MasterName:            cfg.Redis.MasterName,
+		Username:              cfg.Redis.Username,
+		Password:              cfg.Redis.Password,
+		Database:              cfg.Redis.Database,
+		MaxIdle:               cfg.Redis.MaxIdle,
+		MaxActive:             cfg.Redis.MaxActive,
+		Timeout:               cfg.Redis.Timeout,
+		EnableCluster:         cfg.Redis.EnableCluster,
+		UseSSL:                cfg.Redis.UseSSL,
+		SSLInsecureSkipVerify: cfg.Redis.SSLInsecureSkipVerify,
+		EnableTracing:         cfg.Redis.EnableTracing,
+	}
+	go storage.ConnectToRedis(context.Background(), redisConfig)
+
 	//生成http服务
 	restServer, err := NewCustomHTTPServer(cfg)
 	if err != nil {
