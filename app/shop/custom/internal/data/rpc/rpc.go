@@ -16,8 +16,8 @@ type grpcData struct {
 	uc upb.UserClient
 }
 
-func (g *grpcData) Users() data.UserData {
-	return NewUsers(g.uc)
+func (g *grpcData) User() data.UserData {
+	return NewUser(g.uc)
 }
 
 var (

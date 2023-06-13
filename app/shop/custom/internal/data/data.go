@@ -1,5 +1,5 @@
 package data
 
 type DataFactory interface {
-	Users() UserData
+	User() UserData
 }

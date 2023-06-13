@@ -2,6 +2,8 @@ package rpc
 
 import (
 	"context"
+	v1 "github.com/coderi421/goshop/api/user/v1"
+
 	"github.com/coderi421/gframework/gmicro/registry"
 	"github.com/coderi421/gframework/gmicro/server/rpcserver"
 	"github.com/coderi421/gframework/gmicro/server/rpcserver/clientinterceptors"
@@ -32,27 +34,29 @@ func NewUserServiceClient(r registry.Discovery) (upbv1.UserClient, error) {
 	return c, nil
 }
 
-func NewUsers(uc upbv1.UserClient) *users {
-	return &users{uc}
+func NewUser(uc upbv1.UserClient) *user {
+	return &user{uc}
 }
 
-type users struct {
+type user struct {
 	uc upbv1.UserClient
 }
 
-var _ data.UserData = &users{}
+var _ data.UserData = &user{}
 
-func (u *users) Create(ctx context.Context, user *data.User) (int32, error) {
+func (u *user) Create(ctx context.Context, user *data.User) (*v1.UserInfoResponse, error) {
 	protoUser := &upbv1.CreateUserInfo{
 		NickName: user.NickName,
 		PassWord: user.PassWord,
 		Mobile:   user.Mobile,
+		//
+		//Birthday: userDTO.Birthday,
+		//Gender:   userDTO.Gender,
 	}
-	resp, err := u.uc.CreateUser(ctx, protoUser)
-	return resp.Id, err
+	return u.uc.CreateUser(ctx, protoUser)
 }
 
-func (u *users) Update(ctx context.Context, user *data.User) error {
+func (u *user) Update(ctx context.Context, user *data.User) error {
 	protoUser := &upbv1.UpdateUserInfo{
 		Id:       user.ID,
 		NickName: user.NickName,
@@ -63,7 +67,7 @@ func (u *users) Update(ctx context.Context, user *data.User) error {
 	return err
 }
 
-func (u *users) Get(ctx context.Context, userID int32) (*data.User, error) {
+func (u *user) Get(ctx context.Context, userID int32) (*data.User, error) {
 	user, err := u.uc.GetUserById(ctx, &upbv1.IdRequest{Id: userID})
 	if err != nil {
 		return nil, err
@@ -79,7 +83,7 @@ func (u *users) Get(ctx context.Context, userID int32) (*data.User, error) {
 	}, nil
 }
 
-func (u *users) GetByMobile(ctx context.Context, mobile string) (*data.User, error) {
+func (u *user) GetByMobile(ctx context.Context, mobile string) (*data.User, error) {
 	user, err := u.uc.GetUserByMobile(ctx, &upbv1.MobileRequest{Mobile: mobile})
 	if err != nil {
 		return nil, err
@@ -95,7 +99,7 @@ func (u *users) GetByMobile(ctx context.Context, mobile string) (*data.User, err
 	}, nil
 }
 
-func (u *users) CheckPassWord(ctx context.Context, password, encryptedPwd string) (ok bool, err error) {
+func (u *user) CheckPassWord(ctx context.Context, password, encryptedPwd string) (ok bool, err error) {
 	cres, err := u.uc.CheckPassWord(ctx, &upbv1.PasswordCheckInfo{
 		Password:          password,
 		EncryptedPassword: encryptedPwd,
