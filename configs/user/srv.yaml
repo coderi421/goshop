@@ -45,3 +45,14 @@ redis:
   port: 6379
   password: ""
   database: 0
+
+sms:
+  key: "thisisakeyfromsmssystem"
+  secret: "thisisasecretfromsmssystem"
+
+# JWT 配置
+jwt:
+  realm: JWT # jwt 标识
+  key: 141247830 # 服务端密钥
+  timeout: 2400h # token 过期时间(小时)
+  max-refresh: 240h # token 更新时间(小时)
