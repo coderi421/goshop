@@ -26,4 +26,7 @@ const (
 
 	// ErrInit - 500: Init Discovery failed.
 	ErrInit
+
+	// ErrSmsIncorrect - 400: Sms code incorrect.
+	ErrSmsIncorrect
 )
