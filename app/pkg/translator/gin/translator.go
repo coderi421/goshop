@@ -1,4 +1,4 @@
-package gin
+package translator
 
 import (
 	"strings"
@@ -9,6 +9,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	ut "github.com/go-playground/universal-translator"
+	"github.com/go-playground/validator/v10"
 )
 
 // 用来去除验证错误消息中的顶层结构体名称的 为了好看
@@ -21,7 +22,7 @@ func removeTopStruct(fileds map[string]string) map[string]string {
 }
 
 // 接收 Gin 的上下文对象、错误对象和翻译器对象，用于处理验证错误
-func HandleValidatorError(c *gin.Context, err error, trans ut.Translator) {
+func GinHandleValidatorError(c *gin.Context, err error, trans ut.Translator) {
 	errs, ok := err.(validator.ValidationErrors)
 
 	if !ok {

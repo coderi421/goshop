@@ -2,6 +2,7 @@ package db
 
 import (
 	"fmt"
+	v1 "github.com/coderi421/goshop/app/user/srv/data/v1"
 	"sync"
 
 	"github.com/coderi421/gframework/pkg/errors"
@@ -12,11 +13,21 @@ import (
 )
 
 var (
-	dbFactory *gorm.DB
+	dbFactory v1.DataFactory
 	once      sync.Once
 )
 
-func GetDBFactoryOr(mysqlOpts *options.MySQLOptions) (*gorm.DB, error) {
+type mysqlFactory struct {
+	db *gorm.DB
+}
+
+func (mf *mysqlFactory) User() v1.UserStore {
+	return newUser(mf)
+}
+
+var _ v1.DataFactory = &mysqlFactory{}
+
+func GetDBFactoryOr(mysqlOpts *options.MySQLOptions) (v1.DataFactory, error) {
 	if mysqlOpts == nil && dbFactory == nil {
 		return nil, errors.WithCode(code.ErrConnectDB, "failed to get mysql store factory")
 
@@ -29,11 +40,15 @@ func GetDBFactoryOr(mysqlOpts *options.MySQLOptions) (*gorm.DB, error) {
 			mysqlOpts.Host,
 			mysqlOpts.Port,
 			mysqlOpts.Database)
-		dbFactory, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
+		db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 		if err != nil {
 			return
 		}
-		sqlDB, _ := dbFactory.DB()
+
+		dbFactory = &mysqlFactory{
+			db: db,
+		}
+		sqlDB, _ := db.DB()
 		//允许连接多少个mysql
 		sqlDB.SetMaxOpenConns(mysqlOpts.MaxOpenConnections)
 		//允许最大的空闲的连接数

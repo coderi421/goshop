@@ -23,7 +23,7 @@ func NewCustomHTTPServer(conf *config.Config) (*restserver.Server, error) {
 	//_ = tracerProvider()
 
 	//	配置好路由
-	initRouter(cRestServer)
+	initRouter(cRestServer, conf)
 	return cRestServer, nil
 }
 

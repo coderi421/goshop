@@ -24,7 +24,7 @@ func (us *userServer) UpdateUser(ctx context.Context, request *upbv1.UpdateUserI
 		Birthday: &birthDay,
 	}
 	userDTO := v12.UserDTO{userDO}
-	err := us.srv.Update(ctx, &userDTO)
+	err := us.srv.User().Update(ctx, &userDTO)
 	if err != nil {
 		log.Errorf("update user: %v,error: %v", userDTO, err)
 		return nil, err

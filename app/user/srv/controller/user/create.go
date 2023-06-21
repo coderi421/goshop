@@ -18,7 +18,7 @@ func (us *userServer) CreateUser(ctx context.Context, request *upbv1.CreateUserI
 	}
 	userDTO := v1.UserDTO{userDO}
 
-	err := us.srv.Create(ctx, &userDTO)
+	err := us.srv.User().Create(ctx, &userDTO)
 	if err != nil {
 		log.Errorf("get user by mobile: %s,error: %v", request.Mobile, err)
 	}

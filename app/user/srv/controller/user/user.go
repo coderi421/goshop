@@ -6,12 +6,12 @@ import (
 )
 
 type userServer struct {
-	srv srv1.UserSrv
+	srv srv1.ServiceFactory
 }
 
 var _ v1.UserServer = &userServer{}
 
-func NewUserServer(srv srv1.UserSrv) *userServer {
+func NewUserServer(srv srv1.ServiceFactory) *userServer {
 	return &userServer{srv: srv}
 }
 

@@ -19,7 +19,7 @@ func (us *userServer) GetUserList(ctx context.Context, info *upbv1.PageInfo) (*u
 		Page:     int(info.Pn),
 		PageSize: int(info.PSize),
 	}
-	dtoList, err := us.srv.List(ctx, []string{}, srvOpts)
+	dtoList, err := us.srv.User().List(ctx, []string{}, srvOpts)
 	if err != nil {
 		return nil, err
 	}

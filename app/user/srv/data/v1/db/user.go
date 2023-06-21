@@ -25,8 +25,12 @@ func (u *user) DB() *gorm.DB {
 var _ dv1.UserStore = (*user)(nil)
 var _ options.GORMUser = (*user)(nil)
 
-func NewUser(db *gorm.DB) *user {
-	return &user{db: db}
+//func NewUser(db *gorm.DB) *user {
+//	return &user{db: db}
+//}
+
+func newUser(factory *mysqlFactory) *user {
+	return &user{db: factory.db}
 }
 
 // List

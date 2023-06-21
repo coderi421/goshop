@@ -28,12 +28,15 @@ func NewUserRPCServer(cfg *config.Config) (*rpcserver.Server, error) {
 
 	//data := mock.NewUsers()
 
-	gormDB, err := db.GetDBFactoryOr(cfg.MySQLOptions)
+	//gormDB, err := db.GetDBFactoryOr(cfg.MySQLOptions)
+	//if err != nil {
+	//	log.Fatal(err.Error())
+	//}
+	data, err := db.GetDBFactoryOr(cfg.MySQLOptions)
 	if err != nil {
 		log.Fatal(err.Error())
 	}
-	data := db.NewUser(gormDB)
-	srv := srv1.NewUserService(data)
+	srv := srv1.NewService(data)
 	userver := user.NewUserServer(srv)
 
 	rpcAddr := fmt.Sprintf("%s:%d", cfg.Server.Host, cfg.Server.Port)

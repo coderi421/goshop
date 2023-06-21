@@ -28,13 +28,18 @@ type UserSrv interface {
 }
 
 type userService struct {
-	userStore dv1.UserStore
+	userStore dv1.DataFactory
 }
 
 var _ UserSrv = (*userService)(nil)
 
-func NewUserService(userStore dv1.UserStore) *userService {
-	return &userService{userStore: userStore}
+//	func NewUserService(userStore dv1.DataFactory) *userService {
+//		return &userService{userStore: userStore}
+//	}
+func newUserService(store dv1.DataFactory) *userService {
+	return &userService{
+		userStore: store,
+	}
 }
 
 func (u *userService) List(ctx context.Context, orderby []string, opts metav1.ListMeta) (*UserDTOList, error) {
@@ -47,7 +52,7 @@ func (u *userService) List(ctx context.Context, orderby []string, opts metav1.Li
 		 2.去删除一些数据
 		 3.如果data层的方法有bug，坑爹 我们的代码想要具备好的可测试性
 	*/
-	doList, err := u.userStore.List(ctx, orderby, opts)
+	doList, err := u.userStore.User().List(ctx, orderby, opts)
 	if err != nil {
 		return nil, err
 	}
@@ -64,11 +69,11 @@ func (u *userService) List(ctx context.Context, orderby []string, opts metav1.Li
 
 func (u *userService) Create(ctx context.Context, user *UserDTO) error {
 	//一个手机号码只能创建一个用户，且只能通过手机号码创建。判断用户是否存在
-	userInfo, err := u.userStore.GetByMobile(ctx, user.Mobile)
+	userInfo, err := u.userStore.User().GetByMobile(ctx, user.Mobile)
 	//只有手机号不存在的情况下才能注册
 	if err != nil {
 		if errors.IsCode(err, code.ErrUserNotFound) {
-			return u.userStore.Create(ctx, &user.UserDO)
+			return u.userStore.User().Create(ctx, &user.UserDO)
 		}
 		return err
 	}
@@ -83,15 +88,15 @@ func (u *userService) Create(ctx context.Context, user *UserDTO) error {
 
 func (u *userService) Update(ctx context.Context, user *UserDTO) error {
 	//先查询用户是否存在 其实可以不用查询 update一般不会报错
-	_, err := u.userStore.GetByID(ctx, uint64(user.ID))
+	_, err := u.userStore.User().GetByID(ctx, uint64(user.ID))
 	if err != nil {
 		return err
 	}
-	return u.userStore.Update(ctx, &user.UserDO)
+	return u.userStore.User().Update(ctx, &user.UserDO)
 }
 
 func (u *userService) GetByID(ctx context.Context, ID uint64) (*UserDTO, error) {
-	userDO, err := u.userStore.GetByID(ctx, ID)
+	userDO, err := u.userStore.User().GetByID(ctx, ID)
 	if err != nil {
 		return nil, err
 	}
@@ -99,7 +104,7 @@ func (u *userService) GetByID(ctx context.Context, ID uint64) (*UserDTO, error) 
 }
 
 func (u *userService) GetByMobile(ctx context.Context, mobile string) (*UserDTO, error) {
-	userDO, err := u.userStore.GetByMobile(ctx, mobile)
+	userDO, err := u.userStore.User().GetByMobile(ctx, mobile)
 	if err != nil {
 		return nil, err
 	}
