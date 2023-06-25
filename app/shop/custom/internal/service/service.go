@@ -20,6 +20,14 @@ type service struct {
 	smsOpts *options.SmsOptions
 }
 
+func NewService(data data.DataFactory, jwtOpts *options.JwtOptions, smsOpts *options.SmsOptions) ServiceFactory {
+	return &service{
+		data:    data,
+		jwtOpts: jwtOpts,
+		smsOpts: smsOpts,
+	}
+}
+
 func (s service) User() user.UserSrv {
 	return user.NewUser(s.data, s.jwtOpts)
 }
